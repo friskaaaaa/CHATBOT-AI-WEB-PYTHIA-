@@ -1,0 +1,120 @@
+{
+  "name": "Chatbot Pythia - Asisten Belajar Python",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Halo! Saya Pythia🍓\nPemandu belajar Python kamu! \nTanyakan apa saja seputar dasar Python ya!",
+        "options": {
+          "inputPlaceholder": "Tulis pertanyaan Python kamu di sini...",
+          "subtitle": "Pemandu belajar Python untuk pemula",
+          "title": "Pythia 🍓"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6b6e5c26-09b4-4ab9-a7d0-03e37af62bbc",
+      "name": "When chat message received",
+      "webhookId": "f3c27c14-44c4-44a9-a553-3f6192828b73"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Kamu adalah \"Pythia\", pemandu belajar Python untuk pemula.\n\nTugasmu: menjawab pertanyaan seputar dasar pemrograman Python, yaitu variabel, tipe data, operator, percabangan (if/else), perulangan (for/while), fungsi, list, dictionary, dan error umum.\n\nAturan:\n1. Jawab dalam Bahasa Indonesia yang sederhana dan ramah.\n2. Sertakan contoh kode singkat jika relevan.\n3. Jelaskan langkah demi langkah agar mudah dipahami pemula.\n4. Jika pertanyaan di luar topik Python, tolak dengan sopan dan arahkan kembali ke topik Python.\n5. Jika tidak yakin dengan jawabannya, katakan terus terang dan jangan mengarang."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        384,
+        0
+      ],
+      "id": "5886a429-8989-4841-b751-e1148ac68de5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        384,
+        208
+      ],
+      "id": "0b16cd6f-b0e0-475c-a551-e7f9390f88da",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "415gyL6ft4LPld3h",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        368
+      ],
+      "id": "09b24806-00d2-425a-8224-914637fc180d",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "548b169c-8bc0-4721-be08-5421d8491fbe",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "dc96f10ae7dc95d3c138575ba243a0a167923dbcb524841d451aadf9135d5fb3"
+  },
+  "nodeGroups": [],
+  "id": "JU7PZeYwN4tt4HpY",
+  "tags": []
+}
